@@ -5,13 +5,13 @@ const moment = require('moment');
 const Vitamines = require('../models/vitamines');
 
 
-router.post('/give', (req, res) => {
+router.post('/give/:date', (req, res) => {
     // Récupérer la date actuelle
-    const currentDate = moment().format('DD-MM-YYYY');
+    const currentDate = moment().format('YYYY-MM-DD');
     // Créer un nouvel objet Vitamines avec seulement la date
     const newDate = new Vitamines({
         babyName : 'Ernest',
-        date: currentDate,
+        date: req.params.date,
         isGiven: true
     });
     newDate.save().then(data =>{
@@ -24,7 +24,12 @@ router.post('/give', (req, res) => {
 
 router.get('/give/:date',(req,res) => {
     Vitamines.findOne({date : req.params.date}).then(data => {
-        res.json({resutl : true, isGiven : data.isGiven})
+        if (data){
+            res.json({result : true, isGiven : data.isGiven})
+        }else{
+            res.json({result : true, isGiven : false})
+        }
+        
     })
 })
 

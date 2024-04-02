@@ -9,14 +9,15 @@ const priseSchema = mongoose.Schema({
     bibQty: Number, 
     isPee: Boolean, 
     isPoo: Boolean, 
-    comment: String, 
+
 
 })
 
 const BiberonsSchema = mongoose.Schema({
     babyName: String,
     date: String,
-    prise: [priseSchema]
+    prise: [priseSchema],
+    comment: String, 
 
 });
 
