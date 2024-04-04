@@ -43,6 +43,7 @@ router.post('/addBib/:date', async (req, res) => {
 
 router.get('/allBib/:date', (req, res) => {
     Biberons.find({ date: req.params.date }).then(data => {
+        if (data){
         // Trier les données par la clé eventHour
         data[0].prise.sort((a, b) => {
             // Convertir les heures en objets Date pour faciliter la comparaison
@@ -56,6 +57,7 @@ router.get('/allBib/:date', (req, res) => {
         });
 
         res.json({ result: true, data });
-    });
+    }});
+    
 });
 module.exports = router;
