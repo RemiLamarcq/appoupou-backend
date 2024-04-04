@@ -41,18 +41,21 @@ router.post('/addBib/:date', async (req, res) => {
     }
 });
 
-router.get('/allBib/:date',(req,res) => {
-    Biberons.find({date : req.params.date}).then(data => {
+router.get('/allBib/:date', (req, res) => {
+    Biberons.find({ date: req.params.date }).then(data => {
         // Trier les données par la clé eventHour
-        data.sort((a, b) => {
+        data[0].prise.sort((a, b) => {
             // Convertir les heures en objets Date pour faciliter la comparaison
-            const dateA = new Date(a.eventHour);
-            const dateB = new Date(b.eventHour);
+            const [hourA, minuteA] = a.eventHour.split(':');
+            const [hourB, minuteB] = b.eventHour.split(':');
             // Comparer les heures
-            return dateA - dateB;
+            if (parseInt(hourA) === parseInt(hourB)) {
+                return parseInt(minuteA) - parseInt(minuteB);
+            }
+            return parseInt(hourA) - parseInt(hourB);
         });
 
-        res.json({result : true, data})
-    })
-})
+        res.json({ result: true, data });
+    });
+});
 module.exports = router;
