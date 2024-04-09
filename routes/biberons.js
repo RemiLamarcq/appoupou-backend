@@ -43,24 +43,26 @@ router.post('/addBib/:date', async (req, res) => {
 
 router.get('/allBib/:date', (req, res) => {
     Biberons.find({ date: req.params.date }).then(data => {
-        if (data[0].prise[0].isBib){
-        // Trier les données par la clé eventHour
-        data[0].prise.sort((a, b) => {
-            // Convertir les heures en objets Date pour faciliter la comparaison
-            const [hourA, minuteA] = a.eventHour.split(':');
-            const [hourB, minuteB] = b.eventHour.split(':');
-            // Comparer les heures
-            if (parseInt(hourA) === parseInt(hourB)) {
-                return parseInt(minuteA) - parseInt(minuteB);
-            }
-            return parseInt(hourA) - parseInt(hourB);
-        });
+        if (data.length > 0 && data[0].prise.length > 0 && data[0].prise[0].isBib) {
+            // Trier les données par la clé eventHour
+            data[0].prise.sort((a, b) => {
+                // Convertir les heures en objets Date pour faciliter la comparaison
+                const [hourA, minuteA] = a.eventHour.split(':');
+                const [hourB, minuteB] = b.eventHour.split(':');
+                // Comparer les heures
+                if (parseInt(hourA) === parseInt(hourB)) {
+                    return parseInt(minuteA) - parseInt(minuteB);
+                }
+                return parseInt(hourA) - parseInt(hourB);
+            });
 
-        res.json({ result: true, data });
-    }else{
-        res.json({ result: false, data });
-    }
+            res.json({ result: true, data });
+        } else {
+            res.json({ result: false, data });
+        }
+    });
 });
+
 
 });
 module.exports = router;
