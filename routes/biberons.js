@@ -100,5 +100,29 @@ router.put('/updatePrise/:biberonsId/:priseId', async (req, res) => {
     }
 });
 
+router.put('/deletePrise/:biberonsId/:priseId', async (req, res) => {
+    try {
+        const biberonsId = req.params.biberonsId;
+        const priseId = req.params.priseId;
+
+        // Utilisez findOneAndUpdate pour supprimer la prise spécifique du tableau d'objet prise
+        const updatedBiberons = await Biberons.findOneAndUpdate(
+            { _id: biberonsId }, // Recherchez le document Biberons par son ID
+            { $pull: { prise: { _id: priseId } } }, // Supprimez l'élément spécifique du tableau prise
+            { new: true } // Pour renvoyer le document Biberons mis à jour
+        );
+
+        if (updatedBiberons) {
+            res.json({ success: true, message: 'Prise supprimée avec succès', updatedBiberons });
+        } else {
+            res.status(404).json({ success: false, message: 'Prise non trouvée ou suppression impossible' });
+        }
+    } catch (error) {
+        console.error('Erreur lors de la suppression de la prise :', error);
+        res.status(500).json({ success: false, message: 'Erreur lors de la suppression de la prise', error });
+    }
+
+});
+
 
 module.exports = router;
