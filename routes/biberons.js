@@ -68,5 +68,37 @@ router.get('/allBib/:date', (req, res) => {
 //     });
 // })
 
+router.put('/updatePrise/:biberonsId/:priseId', async (req, res) => {
+    try {
+        const biberonsId = req.params.biberonsId;
+        const priseId = req.params.priseId;
+        // const updatedPriseData = {
+        //     isSleep : true,
+        //     eventHour: '15:20', 
+        //     sleepEnd : '17:00',
+        //     isPee: true, 
+
+
+        // }
+        const updatedPriseData = req.body.prise; // Les données mises à jour de la prise
+
+        // Utilisez findOneAndUpdate pour mettre à jour la prise spécifique dans le document Biberons
+        const updatedBiberons = await Biberons.findOneAndUpdate(
+            { _id: biberonsId, 'prise._id': priseId }, // Condition pour trouver le document Biberons contenant la prise spécifique
+            { $set: { 'prise.$': updatedPriseData } }, // Mettez à jour la prise spécifique avec les nouvelles données
+            { new: true } // Pour renvoyer le document Biberons mis à jour
+        );
+
+        if (updatedBiberons) {
+            res.json({ success: true, message: 'Prise mise à jour avec succès', updatedBiberons });
+        } else {
+            res.status(404).json({ success: false, message: 'Prise non trouvée ou mise à jour impossible' });
+        }
+    } catch (error) {
+        console.error('Erreur lors de la mise à jour de la prise :', error);
+        res.status(500).json({ success: false, message: 'Erreur lors de la mise à jour de la prise', error });
+    }
+});
+
 
 module.exports = router;
