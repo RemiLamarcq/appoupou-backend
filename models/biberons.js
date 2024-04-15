@@ -7,6 +7,7 @@ const priseSchema = mongoose.Schema({
     isSleep : Boolean,
     eventHour: String, 
     sleepEnd : String,
+    medecineType: String,
     bibQty: Number, 
     isPee: Boolean, 
     isPoo: Boolean, 
