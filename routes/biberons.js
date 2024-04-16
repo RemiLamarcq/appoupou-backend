@@ -125,4 +125,30 @@ router.put('/deletePrise/:biberonsId/:priseId', async (req, res) => {
 });
 
 
+// router.post('/addComment/:date', async (req, res) => {
+
+   
+//     try {
+//         // Recherchez le document Biberons correspondant à la date
+//         let biberons = await Biberons.findOne({ date : req.params.date });
+
+//         // Si le document n'existe pas, créez-le
+//         if (!biberons) {
+//             biberons = new Biberons({ date : req.params.date});
+//         }
+
+//         // Ajouter le commentaire
+//         biberons.comment = req.body.comment;
+
+//         // Enregistrer les modifications dans la base de données
+//         await biberons.save();
+
+//         res.json({ result: true, message: 'Données ajoutées avec succès' });
+//     } catch (error) {
+//         res.status(500).json({ success: false, message: 'Une erreur est survenue lors de l\'ajout des données', error: error.message });
+//     }
+
+// });
+
+
 module.exports = router;
